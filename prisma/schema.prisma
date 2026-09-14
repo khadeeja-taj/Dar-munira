@@ -1,0 +1,196 @@
+// Dar Al Munira — Prisma schema
+// Default provider is SQLite for zero-config local development.
+// For production, switch `provider` to "postgresql" (Supabase / Postgres)
+// and update DATABASE_URL. The models are portable across both.
+
+generator client {
+  provider = "prisma-client-js"
+  // "native" builds the engine for local dev. The rhel-openssl targets are the
+  // AWS Lambda runtimes that Netlify/Vercel serverless functions run on — both
+  // are included so the query engine is always found in production (this avoids
+  // the classic "Query engine library for current platform could not be found"
+  // error). Harmless for local SQLite development.
+  binaryTargets = ["native", "rhel-openssl-1.0.x", "rhel-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// NOTE: SQLite (dev default) does not support Prisma enums, so status is a
+// String constrained in the application layer (see src/lib/constants.ts).
+// On PostgreSQL/Supabase you may promote these to native enums.
+// Allowed status values: PENDING | APPROVED | REJECTED | ARCHIVED
+
+model Admin {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  name         String
+  role         String   @default("admin")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model StudentApplication {
+  id                String            @id @default(cuid())
+  // Personal
+  fullName          String
+  email             String
+  phone             String
+  fatherPhone       String?
+  nationality       String
+  registrationNo    String
+  universityId      String?
+  // Academic
+  department        String?
+  specialization    String?
+  academicLevel     String?
+  // Course
+  course            String
+  courseLevel       String?
+  quranParts        String?           // Selected juz' (1-30) for Hifz, comma-separated
+  studiedBefore     Boolean           @default(false)
+  completedLevel    String?
+  instituteName     String?
+  // Meta
+  status            String            @default("PENDING")
+  notes             String?
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+
+  files             UploadedFile[]
+
+  @@index([status])
+  @@index([course])
+  @@index([nationality])
+  @@index([createdAt])
+}
+
+model InstructorApplication {
+  id                String            @id @default(cuid())
+  // Personal
+  fullName          String
+  email             String
+  phone             String
+  nationality       String
+  employeeNo        String
+  universityId      String?
+  department        String?
+  specialization    String?
+  academicLevel     String?
+  // Teaching
+  course            String
+  courseLevel       String?
+  taughtBefore      Boolean           @default(false)
+  highestLevelTaught String?
+  instituteName     String?
+  experienceYears   String?
+  teachingMode      String?
+  // Meta
+  status            String            @default("PENDING")
+  notes             String?
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+
+  files             UploadedFile[]
+
+  @@index([status])
+  @@index([course])
+  @@index([nationality])
+  @@index([createdAt])
+}
+
+model VisitingTeacherApplication {
+  id             String            @id @default(cuid())
+  fullName       String
+  phone          String
+  email          String
+  department     String?
+  course         String
+  preferredTime  String?
+  preferredDate  String?
+  daysCount      String?
+  status         String            @default("PENDING")
+  notes          String?
+  createdAt      DateTime          @default(now())
+  updatedAt      DateTime          @updatedAt
+
+  files          UploadedFile[]
+
+  @@index([status])
+  @@index([course])
+  @@index([createdAt])
+}
+
+model UploadedFile {
+  id            String   @id @default(cuid())
+  label         String   // e.g. "University ID Card", "CV / Resume"
+  originalName  String
+  storedName    String   // reference name (kept for traceability)
+  mimeType      String
+  size          Int
+  data          Bytes    // file contents stored in the database (portable across hosts)
+  createdAt     DateTime @default(now())
+
+  studentId     String?
+  student       StudentApplication?    @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  instructorId  String?
+  instructor    InstructorApplication? @relation(fields: [instructorId], references: [id], onDelete: Cascade)
+  visitingId    String?
+  visiting      VisitingTeacherApplication? @relation(fields: [visitingId], references: [id], onDelete: Cascade)
+
+  @@index([studentId])
+  @@index([instructorId])
+  @@index([visitingId])
+}
+
+model Announcement {
+  id        String   @id @default(cuid())
+  titleEn   String
+  titleAr   String
+  bodyEn    String
+  bodyAr    String
+  category  String   @default("news") // news | course | event | deadline | notice
+  pinned    Boolean  @default(false)
+  published Boolean  @default(true)
+  // Optional picture shown with the announcement (bytes stored in the DB).
+  imageData Bytes?
+  imageMime String?
+  // Optional file attachment (e.g. a PDF) offered for download.
+  fileData  Bytes?
+  fileMime  String?
+  fileName  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([published])
+  @@index([createdAt])
+}
+
+model GalleryItem {
+  id        String   @id @default(cuid())
+  titleEn   String
+  titleAr   String
+  mimeType  String
+  data      Bytes    // image bytes stored in the DB (portable, admin-uploaded)
+  videoUrl  String?  // optional: makes this item a "feature film" with a play button
+  published Boolean  @default(true)
+  createdAt DateTime @default(now())
+
+  @@index([published])
+  @@index([createdAt])
+}
+
+model ContactMessage {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  subject   String?
+  message   String
+  handled   Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([handled])
+}

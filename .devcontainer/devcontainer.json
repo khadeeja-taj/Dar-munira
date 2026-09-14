@@ -1,0 +1,24 @@
+{
+  "name": "Dar Al Munira (Node 20)",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:20",
+  "features": {},
+  "forwardPorts": [3000],
+  "portsAttributes": {
+    "3000": { "label": "Dar Al Munira", "onAutoForward": "openBrowser" }
+  },
+  "postCreateCommand": "corepack enable && npm install && cp -n .env.example .env && npm run db:push && npm run db:seed",
+  "postStartCommand": "cp -n .env.example .env && npm install && npm run db:push",
+  "postAttachCommand": {
+    "start-app": "npm run dev"
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "Prisma.prisma",
+        "bradlc.vscode-tailwindcss"
+      ]
+    }
+  }
+}
