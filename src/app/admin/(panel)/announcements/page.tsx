@@ -263,7 +263,7 @@ export default function AnnouncementsPage() {
               <img
                 src={`/api/announcements/${a.id}/image`}
                 alt={a.titleEn}
-                className="mt-3 h-36 w-full rounded-xl object-cover"
+                className="mt-3 w-full rounded-xl object-contain"
               />
             )}
             {(a.titleEn || a.titleAr) && (

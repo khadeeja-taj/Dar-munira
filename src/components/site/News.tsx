@@ -75,7 +75,7 @@ export function News() {
                     <img
                       src={`/api/announcements/${a.id}/image`}
                       alt={lang === "ar" ? a.titleAr : a.titleEn}
-                      className="mt-4 h-40 w-full rounded-xl object-cover"
+                      className="mt-4 w-full rounded-xl object-contain"
                     />
                   )}
                   {(a.titleEn || a.titleAr) && (
