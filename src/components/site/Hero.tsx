@@ -1,11 +1,60 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowRight, Flower2 } from "lucide-react";
 import { useLang } from "@/lib/i18n/provider";
 import { SocialIcons } from "@/components/ui/Social";
+
+/** Gentle drifting white blossoms floating over the hero. */
+function Petals() {
+  // Generate on the client only, to avoid SSR/hydration mismatch from random.
+  const [petals, setPetals] = useState<
+    { left: number; size: number; delay: number; duration: number; drift: number }[]
+  >([]);
+
+  useEffect(() => {
+    const items = Array.from({ length: 14 }, () => ({
+      left: Math.random() * 100,
+      size: 12 + Math.random() * 18,
+      delay: Math.random() * 10,
+      duration: 9 + Math.random() * 9,
+      drift: (Math.random() - 0.5) * 120,
+    }));
+    setPetals(items);
+  }, []);
+
+  return (
+    <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden>
+      {petals.map((p, i) => (
+        <motion.span
+          key={i}
+          className="absolute -top-10 text-white/80"
+          style={{ left: `${p.left}%` }}
+          initial={{ y: -40, x: 0, rotate: 0, opacity: 0 }}
+          animate={{
+            y: ["-6%", "112%"],
+            x: [0, p.drift, 0],
+            rotate: [0, 180, 360],
+            opacity: [0, 0.9, 0.9, 0],
+          }}
+          transition={{
+            duration: p.duration,
+            delay: p.delay,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+        >
+          <Flower2
+            style={{ width: p.size, height: p.size }}
+            className="drop-shadow-[0_2px_6px_rgba(0,0,0,0.25)]"
+          />
+        </motion.span>
+      ))}
+    </div>
+  );
+}
 
 export function Hero() {
   const { d, dir } = useLang();
@@ -18,6 +67,12 @@ export function Hero() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  // Subtle text shadow so every word stays crisp over the photo.
+  const shadow = useMemo(
+    () => ({ textShadow: "0 2px 14px rgba(0,0,0,0.55), 0 1px 3px rgba(0,0,0,0.5)" }),
+    [],
+  );
+
   return (
     <section id="home" className="scroll-mt-24 px-4 pb-10 pt-6 sm:px-6 lg:pt-8">
       <div className="container-x !px-0">
@@ -27,10 +82,7 @@ export function Hero() {
           transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           className="relative isolate overflow-hidden rounded-[28px] border border-white/50 shadow-glass-lg"
         >
-          {/* Building image inside the glass frame (parallax). Uses a CSS
-              background so it ALWAYS shows: your photo at /public/images/
-              building.jpg on top, and the illustrated building.svg beneath as a
-              guaranteed fallback (no photo needed, no JS needed). */}
+          {/* Building photo (parallax) with an illustrated SVG fallback. */}
           <div
             className="absolute inset-0 -z-10 bg-cover bg-center"
             style={{
@@ -42,9 +94,13 @@ export function Hero() {
             aria-label="Dar Munira building"
           />
 
-          {/* Diagonal overlay: dark green on the left for legible text, fading
-              so the building stays visible on the right (as in the blueprint). */}
-          <div className="absolute inset-0 -z-10 bg-[linear-gradient(115deg,rgba(8,58,37,.9)_0%,rgba(11,93,59,.55)_40%,rgba(11,93,59,.18)_66%,rgba(22,120,150,.05)_100%)]" />
+          {/* Deeper diagonal scrim on the left for crisp, legible text… */}
+          <div className="absolute inset-0 -z-10 bg-[linear-gradient(115deg,rgba(6,45,29,.95)_0%,rgba(8,66,42,.78)_38%,rgba(11,93,59,.42)_62%,rgba(22,120,150,.12)_100%)]" />
+          {/* …plus a soft bottom vignette so lower text/buttons stay clear. */}
+          <div className="absolute inset-0 -z-10 bg-[linear-gradient(to_top,rgba(4,30,20,.7)_0%,rgba(4,30,20,0)_45%)]" />
+
+          {/* Floating white blossoms */}
+          <Petals />
 
           <div className="flex min-h-[80vh] flex-col justify-center p-8 sm:p-12 lg:p-16">
             <div className="max-w-2xl">
@@ -66,16 +122,54 @@ export function Hero() {
                   {d.hero.announce}
                 </motion.span>
               </motion.div>
-              <span className="block text-xs font-bold uppercase tracking-[0.28em] text-white/95">
+
+              <span
+                className="block text-xs font-bold uppercase tracking-[0.28em] text-white"
+                style={shadow}
+              >
                 {d.hero.badge}
               </span>
-              <h1 className="mt-3 font-display text-5xl leading-[1.05] text-white sm:text-6xl md:text-7xl">
+
+              <h1
+                className="mt-3 font-display text-5xl leading-[1.05] text-white sm:text-6xl md:text-7xl"
+                style={shadow}
+              >
                 {d.hero.title}
               </h1>
-              <p className="mt-3 font-display text-xl text-white/90 sm:text-2xl">
+
+              {/* Elegant Arabic tagline — "Here hearts blossom with the Qur'an" */}
+              <motion.p
+                dir="rtl"
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5, duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+                className="mt-5 flex items-center gap-3 font-arabic text-3xl leading-relaxed sm:text-4xl md:text-5xl"
+              >
+                <motion.span
+                  animate={{ opacity: [0.85, 1, 0.85], filter: ["brightness(1)", "brightness(1.15)", "brightness(1)"] }}
+                  transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                  className="bg-gradient-to-l from-amber-100 via-white to-leaf bg-clip-text font-semibold text-transparent drop-shadow-[0_2px_10px_rgba(0,0,0,0.5)]"
+                >
+                  هنا تُزهر القلوب بالقرآن
+                </motion.span>
+                <motion.span
+                  animate={{ rotate: [0, 12, -8, 0], scale: [1, 1.12, 1] }}
+                  transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+                >
+                  <Flower2 className="h-7 w-7 text-white/90 drop-shadow-[0_2px_8px_rgba(0,0,0,0.4)] sm:h-8 sm:w-8" />
+                </motion.span>
+              </motion.p>
+
+              <p
+                className="mt-3 font-display text-xl text-white sm:text-2xl"
+                style={shadow}
+              >
                 {d.hero.subtitle}
               </p>
-              <p className="mt-6 max-w-xl text-base leading-relaxed text-white/85 sm:text-lg">
+              <p
+                className="mt-6 max-w-xl text-base leading-relaxed text-white sm:text-lg"
+                style={shadow}
+              >
                 {d.hero.lead}
               </p>
 
