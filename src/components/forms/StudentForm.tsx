@@ -36,10 +36,11 @@ export function StudentForm() {
   const [lookupMsg, setLookupMsg] = useState<string | null>(null);
   const [history, setHistory] = useState<HistoryRow[] | null>(null);
 
-  // Steps: coming from a course card skips the Course step (submit after Academic).
+  // Steps end with a Review step so the user confirms everything and submits
+  // themselves. Coming from a course card skips the Course-selection step.
   const steps = fromCard
-    ? [d.form.personal, d.form.academic]
-    : [d.form.personal, d.form.academic, d.form.courseInfo];
+    ? [d.form.personal, d.form.academic, d.form.review]
+    : [d.form.personal, d.form.academic, d.form.courseInfo, d.form.review];
 
   const {
     register,
@@ -66,6 +67,10 @@ export function StudentForm() {
   }, []);
 
   const studiedBefore = watch("studiedBefore");
+
+  // Human-readable academic level for the review summary.
+  const acadItem = ACADEMIC_LEVELS.find((a) => a.key === watch("academicLevel"));
+  const acadLevelLabel = acadItem ? (lang === "ar" ? acadItem.ar : acadItem.en) : "";
 
   const stepFields: (keyof StudentInput)[][] = fromCard
     ? [
@@ -315,14 +320,49 @@ export function StudentForm() {
             </div>
           )}
 
+          {/* Final step — Review everything, then the user submits themselves. */}
+          {step === steps.length - 1 && (
+            <div className="grid gap-1">
+              <p className="mb-1 text-sm font-semibold text-emerald-deep">
+                {d.form.review}
+              </p>
+              {(
+                [
+                  [d.form.fullName, watch("fullName")],
+                  [d.form.emailAddress, watch("email")],
+                  [d.form.phoneNumber, watch("phone")],
+                  [d.form.nationality, watch("nationality")],
+                  [d.form.registrationNo, watch("registrationNo")],
+                  [d.form.department, watch("department")],
+                  [d.form.specialization, watch("specialization")],
+                  [d.form.academicLevel, acadLevelLabel],
+                  [d.form.selectCourse, watch("course") || preTitle],
+                ] as [string, string | undefined][]
+              )
+                .filter(([, v]) => v)
+                .map(([label, value], i) => (
+                  <div
+                    key={i}
+                    className="flex items-center justify-between gap-4 border-b border-emerald/10 py-2 text-sm"
+                  >
+                    <span className="text-brand-muted">{label}</span>
+                    <span className="text-right font-medium text-emerald-deep">
+                      {value}
+                    </span>
+                  </div>
+                ))}
+              <p className="mt-2 text-xs text-brand-muted">{d.form.reviewNote}</p>
+            </div>
+          )}
+
           {submitError && (
             <p className="mt-4 rounded-xl bg-rose-50 px-4 py-3 text-sm font-medium text-rose-600">
               {submitError}
             </p>
           )}
 
-          {/* When coming from a card, show which course they're registering for */}
-          {fromCard && preTitle && (
+          {/* On the earlier steps (not review), remind which course was chosen. */}
+          {fromCard && preTitle && step < steps.length - 1 && (
             <p className="mt-4 rounded-xl bg-emerald/5 px-4 py-3 text-sm text-emerald-deep">
               {d.form.selectCourse}: <strong>{preTitle}</strong>
             </p>
