@@ -29,9 +29,9 @@ export const studentSchema = z
     department: z.string().max(80).optional().or(z.literal("")),
     specialization: z.string().max(80).optional().or(z.literal("")),
     academicLevel: z.string().max(40).optional().or(z.literal("")),
-    course: z.enum(COURSE_KEYS as [string, ...string[]], {
-      errorMap: () => ({ message: "Select a course" }),
-    }),
+    // Courses are admin-managed now, so accept any non-empty course label.
+    course: z.string().min(1, "Select a course").max(120),
+    courseId: z.string().max(60).optional().or(z.literal("")),
     courseLevel: z.string().max(40).optional().or(z.literal("")),
     quranParts: z.string().max(120).optional().or(z.literal("")),
     studiedBefore: z.boolean().default(false),
@@ -143,3 +143,15 @@ export const announcementSchema = z.object({
   published: z.boolean().default(true),
 });
 export type AnnouncementInput = z.infer<typeof announcementSchema>;
+
+// Admin-managed course/program/competition item (shown on the /courses page).
+export const courseItemSchema = z.object({
+  category: z.enum(["program", "course", "competition"]),
+  titleEn: z.string().min(1, "Required").max(120),
+  titleAr: z.string().min(1, "Required").max(120),
+  descEn: z.string().max(600).optional().or(z.literal("")),
+  descAr: z.string().max(600).optional().or(z.literal("")),
+  published: z.boolean().default(true),
+  sortOrder: z.coerce.number().int().min(0).max(9999).optional(),
+});
+export type CourseItemInput = z.infer<typeof courseItemSchema>;

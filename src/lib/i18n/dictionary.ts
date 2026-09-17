@@ -14,7 +14,7 @@ export const dictionary = {
       gallery: "Gallery",
       student: "Student Registration",
       instructor: "Instructor Registration",
-      news: "News",
+      news: "News & Announcements",
       contact: "Contact",
       admin: "Admin",
     },
@@ -147,7 +147,7 @@ export const dictionary = {
       registrationNo: "University Registration Number",
       employeeNo: "Employee / Registration Number",
       universityId: "University ID Number",
-      department: "Department",
+      department: "Faculty",
       specialization: "Specialization",
       academicLevel: "Current Academic Level",
       selectCourse: "Which course would you like to enroll in?",
@@ -179,13 +179,21 @@ export const dictionary = {
       successInstructor:
         "Your application has been received. We will review it and contact you, in shā’ Allah.",
       duplicate:
-        "An application with these details already exists. Please contact us if you believe this is an error.",
+        "You have already registered for this course. Choose a different course, or contact us if you believe this is an error.",
       error: "Something went wrong. Please try again.",
       reviewNote: "Please review your details before submitting.",
       whatsappHint:
         "A confirmation has been recorded. Join our WhatsApp group for schedules and details:",
       whatsappJoin: "Join the WhatsApp group",
       juzLabel: "Parts (Juz') — select the ones you wish to memorize",
+      returningTitle: "Already registered before?",
+      returningHint:
+        "Enter your University Registration Number to see your courses and register for a new one — your details will be filled in for you.",
+      lookupBtn: "Find my record",
+      lookupNotFound: "No previous registration found for this number. Please register below.",
+      yourCourses: "Courses you have registered for:",
+      noCoursesYet: "No courses yet.",
+      prefilled: "Your details have been filled in below — just choose a new course and submit.",
     },
     student: {
       title: "Student Registration",
@@ -239,7 +247,7 @@ export const dictionary = {
       gallery: "المعرض",
       student: "تسجيل الطالبات",
       instructor: "تسجيل المعلمات",
-      news: "الأخبار",
+      news: "الأخبار والإعلانات",
       contact: "تواصل معنا",
       admin: "لوحة التحكم",
     },
@@ -370,7 +378,7 @@ export const dictionary = {
       registrationNo: "رقم التسجيل الجامعي",
       employeeNo: "رقم الموظّف / التسجيل",
       universityId: "الرقم الجامعي",
-      department: "القسم",
+      department: "الكلية",
       specialization: "التخصّص",
       academicLevel: "المستوى الأكاديمي الحالي",
       selectCourse: "أي دورة ترغبين بالالتحاق بها؟",
@@ -399,13 +407,21 @@ export const dictionary = {
       successInstructor:
         "تم استلام طلبك. سنراجعه ونتواصل معك إن شاء الله.",
       duplicate:
-        "يوجد طلبٌ بهذه البيانات مسبقاً. تواصلي معنا إن كنتِ تعتقدين أن هذا خطأ.",
+        "لقد سجّلتِ في هذه الدورة من قبل. اختاري دورة أخرى، أو تواصلي معنا إن كنتِ تعتقدين أن هذا خطأ.",
       error: "حدث خطأٌ ما. يُرجى المحاولة مرة أخرى.",
       reviewNote: "يُرجى مراجعة بياناتك قبل الإرسال.",
       whatsappHint:
         "تم تسجيل طلبك. انضمّي إلى مجموعة الواتساب لمعرفة المواعيد والتفاصيل:",
       whatsappJoin: "انضمّي إلى مجموعة الواتساب",
       juzLabel: "الأجزاء — اختاري ما ترغبين بحفظه",
+      returningTitle: "سجّلتِ من قبل؟",
+      returningHint:
+        "أدخلي رقم التسجيل الجامعي لعرض دوراتك والتسجيل في دورة جديدة — وستُملأ بياناتك تلقائياً.",
+      lookupBtn: "ابحثي عن سجلّي",
+      lookupNotFound: "لا يوجد تسجيل سابق بهذا الرقم. يُرجى التسجيل أدناه.",
+      yourCourses: "الدورات التي سجّلتِ فيها:",
+      noCoursesYet: "لا توجد دورات بعد.",
+      prefilled: "تم ملء بياناتك أدناه — فقط اختاري دورة جديدة وأرسلي.",
     },
     student: {
       title: "تسجيل الطالبات",

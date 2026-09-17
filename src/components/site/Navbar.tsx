@@ -11,10 +11,9 @@ import { cn } from "@/lib/utils";
 
 const links = [
   { href: "/#home", key: "nav.home" },
-  { href: "/#courses", key: "nav.courses" },
+  { href: "/#news", key: "nav.news" },
   { href: "/#teachers", key: "nav.teachers" },
   { href: "/#gallery", key: "nav.gallery" },
-  { href: "/#news", key: "nav.news" },
   { href: "/#contact", key: "nav.contact" },
 ];
 
@@ -71,10 +70,10 @@ export function Navbar() {
             {t("nav.admin")}
           </Link>
           <Link
-            href="/register"
+            href="/courses"
             className="hidden whitespace-nowrap rounded-full bg-emerald px-4 py-2 text-sm font-semibold text-white shadow-glass transition hover:bg-emerald-soft sm:inline-flex"
           >
-            {t("hero.getStarted")}
+                {t("hero.getStarted")}
           </Link>
           <button
             className="grid h-10 w-10 place-items-center rounded-full text-emerald-deep lg:hidden"
@@ -103,7 +102,7 @@ export function Navbar() {
             ))}
             <li className="mt-2 flex gap-2">
               <Link
-                href="/register"
+                href="/courses"
                 onClick={() => setOpen(false)}
                 className="btn-primary flex-1"
               >

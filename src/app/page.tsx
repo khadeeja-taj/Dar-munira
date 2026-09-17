@@ -1,7 +1,6 @@
 import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
 import { Hero } from "@/components/site/Hero";
-import { Courses } from "@/components/site/Courses";
 import { Teachers } from "@/components/site/Teachers";
 import { Gallery } from "@/components/site/Gallery";
 import { News } from "@/components/site/News";
@@ -13,10 +12,9 @@ export default function HomePage() {
       <Navbar />
       <main>
         <Hero />
-        <Courses />
+        <News />
         <Teachers />
         <Gallery />
-        <News />
         <Contact />
       </main>
       <Footer />

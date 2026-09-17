@@ -49,6 +49,7 @@ model StudentApplication {
   academicLevel     String?
   // Course
   course            String
+  courseId          String?           // links to CourseItem when chosen from a card
   courseLevel       String?
   quranParts        String?           // Selected juz' (1-30) for Hifz, comma-separated
   studiedBefore     Boolean           @default(false)
@@ -181,6 +182,24 @@ model GalleryItem {
 
   @@index([published])
   @@index([createdAt])
+}
+
+// Courses page — admin-managed items grouped into three categories:
+//   program | course | competition
+model CourseItem {
+  id        String   @id @default(cuid())
+  category  String   @default("program") // program | course | competition
+  titleEn   String
+  titleAr   String
+  descEn    String?
+  descAr    String?
+  published Boolean  @default(true)
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([category])
+  @@index([published])
 }
 
 model ContactMessage {
