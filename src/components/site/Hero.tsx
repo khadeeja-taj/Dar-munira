@@ -151,7 +151,7 @@ export function Hero() {
               </p>
 
               <div className="mt-9 flex flex-wrap items-center gap-3">
-                <Link href="/courses" className="btn-accent text-base">
+                <Link href="/register" className="btn-accent text-base">
                   {d.hero.getStarted}
                   <Arrow className="h-4 w-4" />
                 </Link>

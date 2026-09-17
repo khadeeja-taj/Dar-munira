@@ -70,7 +70,7 @@ export function Navbar() {
             {t("nav.admin")}
           </Link>
           <Link
-            href="/courses"
+            href="/register"
             className="hidden whitespace-nowrap rounded-full bg-emerald px-4 py-2 text-sm font-semibold text-white shadow-glass transition hover:bg-emerald-soft sm:inline-flex"
           >
                 {t("hero.getStarted")}
@@ -102,7 +102,7 @@ export function Navbar() {
             ))}
             <li className="mt-2 flex gap-2">
               <Link
-                href="/courses"
+                href="/register"
                 onClick={() => setOpen(false)}
                 className="btn-primary flex-1"
               >
