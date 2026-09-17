@@ -32,24 +32,19 @@ export async function GET(req: Request) {
     createdAt: true,
   } as const;
 
-  // Match the registration number regardless of upper/lower case. On
-  // PostgreSQL (production) this uses case-insensitive matching; if that mode
-  // isn't supported (e.g. local SQLite) fall back to common case variants.
-  let rows;
-  try {
-    rows = await prisma.studentApplication.findMany({
-      where: { registrationNo: { equals: reg, mode: "insensitive" } },
-      orderBy: { createdAt: "desc" },
-      select,
-    });
-  } catch {
-    const variants = Array.from(new Set([reg, reg.toUpperCase(), reg.toLowerCase()]));
-    rows = await prisma.studentApplication.findMany({
+  // Match the registration number regardless of upper/lower case. Portable
+  // across SQLite (dev) and PostgreSQL (prod): match the exact value plus its
+  // upper- and lower-cased variants, then confirm case-insensitively in JS.
+  const variants = Array.from(
+    new Set([reg, reg.toUpperCase(), reg.toLowerCase()]),
+  );
+  const rows = (
+    await prisma.studentApplication.findMany({
       where: { registrationNo: { in: variants } },
       orderBy: { createdAt: "desc" },
       select,
-    });
-  }
+    })
+  ).filter((r) => r.registrationNo.toLowerCase() === reg.toLowerCase());
 
   if (rows.length === 0) return ok({ found: false });
 
