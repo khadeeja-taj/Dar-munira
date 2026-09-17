@@ -104,12 +104,12 @@ export function JuzPicker({
     );
 
   return (
-    <div className="relative max-w-[20rem] rounded-2xl border border-leaf/40 bg-white/50 p-3 shadow-glass">
-      <CornerVine className="pointer-events-none absolute -left-1.5 -top-1.5 h-11 w-11" />
-      <CornerVine className="pointer-events-none absolute -right-1.5 -top-1.5 h-11 w-11 -scale-x-100" />
-      <CornerVine className="pointer-events-none absolute -bottom-1.5 -left-1.5 h-11 w-11 -scale-y-100" />
-      <CornerVine className="pointer-events-none absolute -bottom-1.5 -right-1.5 h-11 w-11 -scale-100" />
-      <div className="grid grid-cols-6 gap-1">
+    <div className="relative max-w-[15rem] rounded-2xl border border-leaf/40 bg-white/50 p-2.5 shadow-glass">
+      <CornerVine className="pointer-events-none absolute -left-1 -top-1 h-8 w-8" />
+      <CornerVine className="pointer-events-none absolute -right-1 -top-1 h-8 w-8 -scale-x-100" />
+      <CornerVine className="pointer-events-none absolute -bottom-1 -left-1 h-8 w-8 -scale-y-100" />
+      <CornerVine className="pointer-events-none absolute -bottom-1 -right-1 h-8 w-8 -scale-100" />
+      <div className="grid grid-cols-6 gap-0.5">
         {QURAN_JUZ.map((n) => (
           <button
             key={n}
