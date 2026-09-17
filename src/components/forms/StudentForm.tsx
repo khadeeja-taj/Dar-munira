@@ -136,14 +136,15 @@ export function StudentForm() {
     else setSubmitError(d.form.error);
   }
 
-  // Only actually submit on the final step. On earlier steps (or if the user
-  // presses Enter), just advance instead of submitting.
+  // The form never submits on its own. Pressing Enter only advances the
+  // earlier steps; on the Review step it does nothing — the user must click
+  // the Submit button (which calls submitNow) themselves.
   function handleFormSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (step < steps.length - 1) {
-      next();
-      return;
-    }
+    if (step < steps.length - 1) next();
+  }
+
+  function submitNow() {
     handleSubmit(onSubmit)();
   }
 
@@ -386,7 +387,12 @@ export function StudentForm() {
                 <Arrow className="h-4 w-4" />
               </button>
             ) : (
-              <button type="submit" disabled={isSubmitting} className="btn-accent">
+              <button
+                type="button"
+                onClick={submitNow}
+                disabled={isSubmitting}
+                className="btn-accent"
+              >
                 <Send className="h-4 w-4" />
                 {isSubmitting ? d.form.submitting : d.form.submit}
               </button>
