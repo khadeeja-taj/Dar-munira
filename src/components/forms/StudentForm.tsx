@@ -122,9 +122,10 @@ export function StudentForm() {
         setHistory(json.data.history || []);
         setLookupMsg(null);
         // Details are filled in. If a course is already chosen (came from a
-        // course card), jump straight to the Review step so they just submit.
+        // course card): for Hifz/Tilawah go to the Academic step so they can
+        // pick their juz'; otherwise jump straight to the Review step.
         if (fromCard) {
-          setStep(steps.length - 1);
+          setStep(showJuz ? 1 : steps.length - 1);
           window.scrollTo({ top: 0, behavior: "smooth" });
         }
       } else {
