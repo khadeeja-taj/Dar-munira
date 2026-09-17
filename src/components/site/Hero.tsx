@@ -7,6 +7,58 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 import { useLang } from "@/lib/i18n/provider";
 import { SocialIcons } from "@/components/ui/Social";
 
+/** A delicate curved vine with leaves and a few blossoms, in the site greens. */
+function FloralDivider({ className }: { className?: string }) {
+  const leaves = [
+    { x: 40, y: 11, r: -30 },
+    { x: 92, y: 23, r: 28 },
+    { x: 150, y: 11, r: -26 },
+    { x: 200, y: 22, r: 26 },
+  ];
+  const blossoms = [
+    { x: 70, y: 15, c: "#f7f8f4" },
+    { x: 170, y: 15, c: "#f7f8f4" },
+    { x: 120, y: 17, c: "#e79bb0" },
+  ];
+  return (
+    <svg viewBox="0 0 240 34" className={className} fill="none" aria-hidden>
+      <path
+        d="M6 17 C 40 3 80 3 120 17 C 160 31 200 31 234 17"
+        stroke="#7fbf3f"
+        strokeWidth="2"
+        strokeLinecap="round"
+        opacity="0.95"
+      />
+      {leaves.map((l, i) => (
+        <path
+          key={i}
+          d="M0 0 C 7 -9 21 -9 28 0 C 21 9 7 9 0 0 Z"
+          fill="#7fbf3f"
+          opacity="0.9"
+          transform={`translate(${l.x} ${l.y}) rotate(${l.r}) scale(0.7)`}
+        />
+      ))}
+      {blossoms.map((b, i) => (
+        <g key={`b${i}`} transform={`translate(${b.x} ${b.y})`}>
+          {[0, 72, 144, 216, 288].map((a) => (
+            <ellipse
+              key={a}
+              cx="0"
+              cy="-4"
+              rx="2.4"
+              ry="4.2"
+              fill={b.c}
+              opacity="0.95"
+              transform={`rotate(${a})`}
+            />
+          ))}
+          <circle r="1.8" fill="#0b5d3b" />
+        </g>
+      ))}
+    </svg>
+  );
+}
+
 export function Hero() {
   const { d, dir, lang } = useLang();
   const [y, setY] = useState(0);
@@ -111,35 +163,28 @@ export function Hero() {
             </div>
           </div>
 
-          {/* Elegant tagline (bilingual) in a refined frosted panel, placed on
-              the free side of the image (opposite the main text, in both
-              languages, via logical `end` inset). */}
+          {/* Bilingual tagline framed by a delicate vine-and-blossom ornament
+              in the site's greens, placed on the free side of the image. */}
           <motion.div
-            initial={{ opacity: 0, y: 18, scale: 0.96 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
+            initial={{ opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.55, duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-            className="absolute bottom-8 end-6 z-10 w-[16rem] sm:bottom-12 sm:end-12 sm:w-[20rem]"
+            className="absolute bottom-8 end-6 z-10 flex w-[17rem] flex-col items-center gap-2 text-center sm:bottom-12 sm:end-12 sm:w-[23rem]"
           >
-            <motion.div
-              animate={{ y: [0, -6, 0] }}
-              transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-              className="rounded-3xl border border-white/25 bg-emerald-deep/25 px-6 py-6 text-center shadow-glass-lg ring-1 ring-white/10 backdrop-blur-md"
+            <FloralDivider className="h-6 w-40 sm:h-7 sm:w-52" />
+            <p
+              dir={dir}
+              className={`text-3xl font-semibold leading-[1.7] text-white sm:text-4xl ${
+                lang === "ar" ? "font-arabic" : "font-display italic"
+              }`}
+              style={{
+                textShadow:
+                  "0 2px 16px rgba(6,45,29,0.85), 0 0 24px rgba(127,191,63,0.3)",
+              }}
             >
-              <span className="mx-auto mb-4 block h-px w-12 bg-gradient-to-r from-transparent via-leaf to-transparent" />
-              <p
-                dir={dir}
-                className={`text-2xl font-semibold leading-[1.7] text-white sm:text-3xl ${
-                  lang === "ar" ? "font-arabic" : "font-display italic"
-                }`}
-                style={{
-                  textShadow:
-                    "0 2px 14px rgba(0,0,0,0.55), 0 0 22px rgba(255,255,255,0.18)",
-                }}
-              >
-                {d.hero.tagline}
-              </p>
-              <span className="mx-auto mt-4 block h-px w-12 bg-gradient-to-r from-transparent via-leaf to-transparent" />
-            </motion.div>
+              {d.hero.tagline}
+            </p>
+            <FloralDivider className="h-6 w-40 -scale-y-100 sm:h-7 sm:w-52" />
           </motion.div>
         </motion.div>
       </div>
