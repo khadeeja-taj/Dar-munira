@@ -26,6 +26,42 @@ const CATEGORIES: {
   { key: "competition", en: "Competitions", ar: "المسابقات", icon: Trophy },
 ];
 
+// The four Programs always show (even before an admin adds anything).
+const DEFAULT_PROGRAMS: CourseItem[] = [
+  {
+    id: "prog-hifz-quran",
+    category: "program",
+    titleEn: "Hifz ul Qur'an",
+    titleAr: "حفظ القرآن",
+    descEn: "Structured memorization of the Holy Qur'an with revision and tarbiyah.",
+    descAr: "حفظٌ منظّم للقرآن الكريم مع المراجعة والتربية.",
+  },
+  {
+    id: "prog-tilawah",
+    category: "program",
+    titleEn: "Tilawah (Recitation)",
+    titleAr: "تلاوة القرآن",
+    descEn: "Beautiful, correct recitation of the Holy Qur'an.",
+    descAr: "تلاوة القرآن الكريم تلاوةً صحيحةً مُجوَّدة.",
+  },
+  {
+    id: "prog-tadabbur",
+    category: "program",
+    titleEn: "Tadabbur (Reflection)",
+    titleAr: "تدبر القرآن",
+    descEn: "Reflect on the meanings and guidance of the Qur'an.",
+    descAr: "التدبّر في معاني القرآن الكريم وهداياته.",
+  },
+  {
+    id: "prog-tajweed",
+    category: "program",
+    titleEn: "Tajweed",
+    titleAr: "التجويد",
+    descEn: "Master correct Qur'anic recitation across progressive levels.",
+    descAr: "إتقان التلاوة الصحيحة عبر مستويات متدرّجة.",
+  },
+];
+
 export function Courses() {
   const { d, lang } = useLang();
   const [items, setItems] = useState<CourseItem[] | null>(null);
@@ -49,7 +85,11 @@ export function Courses() {
         </Reveal>
 
         {CATEGORIES.map(({ key, en, ar, icon: CatIcon }) => {
-          const group = (items || []).filter((c) => c.category === key);
+          let group = (items || []).filter((c) => c.category === key);
+          // Programs always have the four defaults if none were added yet.
+          if (key === "program" && items && group.length === 0) {
+            group = DEFAULT_PROGRAMS;
+          }
           return (
             <div key={key} className="mt-14">
               <Reveal>

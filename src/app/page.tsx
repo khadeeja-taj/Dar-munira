@@ -5,10 +5,12 @@ import { Teachers } from "@/components/site/Teachers";
 import { Gallery } from "@/components/site/Gallery";
 import { News } from "@/components/site/News";
 import { Contact } from "@/components/site/Contact";
+import { BotanicalBackdrop } from "@/components/ui/BotanicalBackdrop";
 
 export default function HomePage() {
   return (
     <>
+      <BotanicalBackdrop />
       <Navbar />
       <main>
         <Hero />

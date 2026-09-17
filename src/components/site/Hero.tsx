@@ -86,7 +86,7 @@ export function Hero() {
           <div
             className="absolute inset-0 -z-10 bg-cover bg-center"
             style={{
-              transform: `translateY(${y * 0.18}px) scale(1.12)`,
+              transform: `translateY(${y * 0.04}px) scale(1.06)`,
               backgroundImage:
                 "url(/images/building.jpg), url(/images/building.svg)",
             }}
@@ -137,28 +137,56 @@ export function Hero() {
                 {d.hero.title}
               </h1>
 
-              {/* Elegant Arabic tagline — "Here hearts blossom with the Qur'an" */}
-              <motion.p
+              {/* Elegant Arabic tagline — "Here hearts blossom with the Qur'an",
+                  written in white with little flower accents. */}
+              <motion.div
                 dir="rtl"
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5, duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-                className="mt-5 flex items-center gap-3 font-arabic text-3xl leading-relaxed sm:text-4xl md:text-5xl"
+                className="mt-6"
               >
-                <motion.span
-                  animate={{ opacity: [0.85, 1, 0.85], filter: ["brightness(1)", "brightness(1.15)", "brightness(1)"] }}
-                  transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                  className="bg-gradient-to-l from-amber-100 via-white to-leaf bg-clip-text font-semibold text-transparent drop-shadow-[0_2px_10px_rgba(0,0,0,0.5)]"
-                >
-                  هنا تُزهر القلوب بالقرآن
-                </motion.span>
-                <motion.span
-                  animate={{ rotate: [0, 12, -8, 0], scale: [1, 1.12, 1] }}
-                  transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-                >
-                  <Flower2 className="h-7 w-7 text-white/90 drop-shadow-[0_2px_8px_rgba(0,0,0,0.4)] sm:h-8 sm:w-8" />
-                </motion.span>
-              </motion.p>
+                <div className="flex items-center gap-3">
+                  <motion.span
+                    animate={{ rotate: [0, 14, -6, 0], scale: [1, 1.15, 1] }}
+                    transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+                  >
+                    <Flower2 className="h-6 w-6 text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.45)] sm:h-7 sm:w-7" />
+                  </motion.span>
+                  <span
+                    className="font-arabic text-3xl font-semibold leading-[1.5] text-white sm:text-4xl md:text-5xl"
+                    style={{
+                      textShadow:
+                        "0 2px 18px rgba(0,0,0,0.6), 0 0 26px rgba(255,255,255,0.28)",
+                    }}
+                  >
+                    هنا تُزهر القلوب بالقرآن
+                  </span>
+                  <motion.span
+                    animate={{ rotate: [0, -14, 6, 0], scale: [1, 1.15, 1] }}
+                    transition={{ duration: 5, delay: 0.6, repeat: Infinity, ease: "easeInOut" }}
+                  >
+                    <Flower2 className="h-6 w-6 text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.45)] sm:h-7 sm:w-7" />
+                  </motion.span>
+                </div>
+                {/* a little row of white blossoms under the phrase */}
+                <div className="mt-2 flex items-center gap-1.5 ps-9">
+                  {[0, 1, 2, 3, 4].map((i) => (
+                    <motion.span
+                      key={i}
+                      animate={{ y: [0, -3, 0], opacity: [0.6, 1, 0.6] }}
+                      transition={{
+                        duration: 2.6,
+                        delay: i * 0.25,
+                        repeat: Infinity,
+                        ease: "easeInOut",
+                      }}
+                    >
+                      <Flower2 className="h-3.5 w-3.5 text-white/85" />
+                    </motion.span>
+                  ))}
+                </div>
+              </motion.div>
 
               <p
                 className="mt-3 font-display text-xl text-white sm:text-2xl"
