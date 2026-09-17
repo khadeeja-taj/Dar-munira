@@ -160,21 +160,38 @@ export function Hero() {
               <div className="mt-10">
                 <SocialIcons variant="light" />
               </div>
+
+              {/* Tagline in normal flow on mobile & tablet (no overlap). */}
+              <div className="mt-10 flex flex-col items-center gap-2 text-center lg:hidden">
+                <FloralDivider className="h-6 w-40" />
+                <p
+                  dir={dir}
+                  className={`text-2xl font-semibold leading-[1.7] text-white sm:text-3xl ${
+                    lang === "ar" ? "font-arabic" : "font-display italic"
+                  }`}
+                  style={{
+                    textShadow:
+                      "0 2px 16px rgba(6,45,29,0.85), 0 0 24px rgba(127,191,63,0.3)",
+                  }}
+                >
+                  {d.hero.tagline}
+                </p>
+                <FloralDivider className="h-6 w-40 -scale-y-100" />
+              </div>
             </div>
           </div>
 
-          {/* Bilingual tagline framed by a delicate vine-and-blossom ornament
-              in the site's greens, placed on the free side of the image. */}
+          {/* Same tagline as an elegant panel on the free side — laptop only. */}
           <motion.div
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.55, duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-            className="absolute bottom-8 end-6 z-10 flex w-[17rem] flex-col items-center gap-2 text-center sm:bottom-12 sm:end-12 sm:w-[23rem]"
+            className="absolute bottom-12 end-12 z-10 hidden w-[23rem] flex-col items-center gap-2 text-center lg:flex"
           >
-            <FloralDivider className="h-6 w-40 sm:h-7 sm:w-52" />
+            <FloralDivider className="h-7 w-52" />
             <p
               dir={dir}
-              className={`text-3xl font-semibold leading-[1.7] text-white sm:text-4xl ${
+              className={`text-4xl font-semibold leading-[1.7] text-white ${
                 lang === "ar" ? "font-arabic" : "font-display italic"
               }`}
               style={{
@@ -184,7 +201,7 @@ export function Hero() {
             >
               {d.hero.tagline}
             </p>
-            <FloralDivider className="h-6 w-40 -scale-y-100 sm:h-7 sm:w-52" />
+            <FloralDivider className="h-7 w-52 -scale-y-100" />
           </motion.div>
         </motion.div>
       </div>
