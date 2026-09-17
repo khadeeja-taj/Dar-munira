@@ -50,7 +50,7 @@ export function Hero() {
           {/* Soft dark gradient only at the very bottom, for the tagline. */}
           <div className="absolute inset-0 -z-10 bg-[linear-gradient(to_top,rgba(6,45,29,.62)_0%,rgba(6,45,29,0)_28%)]" />
 
-          <div className="flex min-h-[80vh] flex-col justify-center p-8 pb-24 sm:p-12 sm:pb-28 lg:p-16 lg:pb-28">
+          <div className="flex min-h-[80vh] flex-col justify-center p-8 sm:p-12 lg:p-16">
             <div className="max-w-2xl">
               <motion.div
                 initial={{ opacity: 0, y: -14, scale: 0.96 }}
@@ -111,22 +111,36 @@ export function Hero() {
             </div>
           </div>
 
-          {/* Elegant tagline (bilingual) — pinned to the bottom of the image. */}
-          <motion.p
-            dir={dir}
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5, duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-            className={`absolute inset-x-0 bottom-0 px-6 pb-6 text-center text-3xl font-semibold leading-[1.6] text-white sm:pb-8 sm:text-4xl md:text-5xl ${
-              lang === "ar" ? "font-arabic" : "font-display"
-            }`}
-            style={{
-              textShadow:
-                "0 2px 18px rgba(0,0,0,0.6), 0 0 26px rgba(255,255,255,0.22)",
-            }}
+          {/* Elegant tagline (bilingual) in a refined frosted panel, placed on
+              the free side of the image (opposite the main text, in both
+              languages, via logical `end` inset). */}
+          <motion.div
+            initial={{ opacity: 0, y: 18, scale: 0.96 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ delay: 0.55, duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+            className="absolute bottom-8 end-6 z-10 w-[16rem] sm:bottom-12 sm:end-12 sm:w-[20rem]"
           >
-            {d.hero.tagline}
-          </motion.p>
+            <motion.div
+              animate={{ y: [0, -6, 0] }}
+              transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+              className="rounded-3xl border border-white/25 bg-emerald-deep/25 px-6 py-6 text-center shadow-glass-lg ring-1 ring-white/10 backdrop-blur-md"
+            >
+              <span className="mx-auto mb-4 block h-px w-12 bg-gradient-to-r from-transparent via-leaf to-transparent" />
+              <p
+                dir={dir}
+                className={`text-2xl font-semibold leading-[1.7] text-white sm:text-3xl ${
+                  lang === "ar" ? "font-arabic" : "font-display italic"
+                }`}
+                style={{
+                  textShadow:
+                    "0 2px 14px rgba(0,0,0,0.55), 0 0 22px rgba(255,255,255,0.18)",
+                }}
+              >
+                {d.hero.tagline}
+              </p>
+              <span className="mx-auto mt-4 block h-px w-12 bg-gradient-to-r from-transparent via-leaf to-transparent" />
+            </motion.div>
+          </motion.div>
         </motion.div>
       </div>
     </section>
