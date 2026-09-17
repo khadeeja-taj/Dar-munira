@@ -9,6 +9,7 @@ import { useLang } from "@/lib/i18n/provider";
 import { Stepper } from "@/components/ui/Stepper";
 import { SuccessCard } from "@/components/ui/SuccessCard";
 import { Field, Input, Select, RadioPills } from "@/components/ui/Field";
+import { JuzPicker } from "@/components/ui/JuzPicker";
 import { studentSchema, type StudentInput } from "@/lib/validations";
 import { COMPLETED_LEVELS, ACADEMIC_LEVELS, WHATSAPP_GROUP_URL } from "@/lib/constants";
 
@@ -67,6 +68,15 @@ export function StudentForm() {
   }, []);
 
   const studiedBefore = watch("studiedBefore");
+
+  // Juz' (parts) selection — shown for Qur'an memorization / recitation courses.
+  const [juz, setJuz] = useState<number[]>([]);
+  const selCourseId = watch("courseId") || preId;
+  const selCourseTitle = watch("course") || preTitle;
+  const showJuz =
+    ["prog-hifz-quran", "prog-tilawah"].includes(selCourseId) ||
+    /hifz|tilaw/i.test(selCourseTitle) ||
+    /حفظ\s*القرآن|تلاوة/.test(selCourseTitle);
 
   // Human-readable academic level for the review summary.
   const acadItem = ACADEMIC_LEVELS.find((a) => a.key === watch("academicLevel"));
@@ -131,7 +141,13 @@ export function StudentForm() {
   async function onSubmit(values: StudentInput) {
     setSubmitError(null);
     const fd = new FormData();
-    fd.append("payload", JSON.stringify(values));
+    fd.append(
+      "payload",
+      JSON.stringify({
+        ...values,
+        quranParts: showJuz && juz.length ? juz.join(",") : undefined,
+      }),
+    );
     const res = await fetch("/api/register/student", { method: "POST", body: fd });
     if (res.ok) {
       setDone(true);
@@ -273,6 +289,14 @@ export function StudentForm() {
             </div>
           )}
 
+          {/* Qur'an parts (juz') picker — for Hifz / Tilawah courses. */}
+          {step === 1 && showJuz && (
+            <div className="mt-6">
+              <label className="field-label mb-2 block">{d.form.juzLabel}</label>
+              <JuzPicker value={juz} onChange={setJuz} />
+            </div>
+          )}
+
           {/* Step 3 — Course (only when not coming from a card) */}
           {!fromCard && step === 2 && (
             <div className="grid gap-5">
@@ -344,6 +368,7 @@ export function StudentForm() {
                   [d.form.specialization, watch("specialization")],
                   [d.form.academicLevel, acadLevelLabel],
                   [d.form.selectCourse, watch("course") || preTitle],
+                  [d.form.juzLabel, showJuz && juz.length ? juz.join(", ") : ""],
                 ] as [string, string | undefined][]
               )
                 .filter(([, v]) => v)
