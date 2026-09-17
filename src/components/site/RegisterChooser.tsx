@@ -12,7 +12,8 @@ export function RegisterChooser() {
 
   const cards = [
     {
-      href: "/register/student",
+      // Students first browse the Courses page, then pick a course to register.
+      href: "/courses",
       icon: GraduationCap,
       title: d.join.studentTitle,
       desc: d.join.studentDesc,
