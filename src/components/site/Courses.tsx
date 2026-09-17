@@ -76,14 +76,6 @@ export function Courses() {
   return (
     <section id="courses" className="scroll-mt-24 py-20">
       <div className="container-x">
-        <Reveal className="mx-auto max-w-2xl text-center">
-          <span className="section-kicker">{d.courses.kicker}</span>
-          <h2 className="mt-3 font-display text-4xl text-emerald-deep">
-            {d.courses.title}
-          </h2>
-          <p className="mt-4 leading-relaxed text-brand-muted">{d.courses.lead}</p>
-        </Reveal>
-
         {CATEGORIES.map(({ key, en, ar, icon: CatIcon }) => {
           let group = (items || []).filter((c) => c.category === key);
           // Programs always have the four defaults if none were added yet.
