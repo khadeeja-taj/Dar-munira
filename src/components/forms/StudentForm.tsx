@@ -69,14 +69,13 @@ export function StudentForm() {
 
   const studiedBefore = watch("studiedBefore");
 
-  // Juz' (parts) selection — shown for Qur'an memorization / recitation courses.
+  // Juz' (parts) selection — shown only for the Hifz (memorization) course.
   const [juz, setJuz] = useState<number[]>([]);
   const selCourseId = watch("courseId") || preId;
   const selCourseTitle = watch("course") || preTitle;
   const showJuz =
-    ["prog-hifz-quran", "prog-tilawah"].includes(selCourseId) ||
-    /hifz|tilaw/i.test(selCourseTitle) ||
-    /حفظ\s*القرآن|تلاوة/.test(selCourseTitle);
+    selCourseId === "prog-hifz-quran" ||
+    /hifz\s*ul\s*qur|حفظ\s*القرآن/i.test(selCourseTitle);
 
   // Human-readable academic level for the review summary.
   const acadItem = ACADEMIC_LEVELS.find((a) => a.key === watch("academicLevel"));
