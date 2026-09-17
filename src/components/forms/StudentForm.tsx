@@ -131,6 +131,17 @@ export function StudentForm() {
     else setSubmitError(d.form.error);
   }
 
+  // Only actually submit on the final step. On earlier steps (or if the user
+  // presses Enter), just advance instead of submitting.
+  function handleFormSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    if (step < steps.length - 1) {
+      next();
+      return;
+    }
+    handleSubmit(onSubmit)();
+  }
+
   if (done) {
     return (
       <SuccessCard
@@ -202,7 +213,7 @@ export function StudentForm() {
           {d.form.step} {step + 1} {d.form.of} {steps.length}
         </p>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="mt-6">
+        <form onSubmit={handleFormSubmit} className="mt-6">
           {/* Step 1 — Personal */}
           {step === 0 && (
             <div className="grid gap-4 sm:grid-cols-2">

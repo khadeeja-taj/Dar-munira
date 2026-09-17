@@ -88,6 +88,17 @@ export function InstructorForm() {
     else setSubmitError(d.form.error);
   }
 
+  // Only submit on the final step; otherwise advance (prevents Enter-key or
+  // early submits from posting the form).
+  function handleFormSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    if (step < steps.length - 1) {
+      next();
+      return;
+    }
+    handleSubmit(onSubmit)();
+  }
+
   if (done) {
     return (
       <SuccessCard
@@ -111,7 +122,7 @@ export function InstructorForm() {
         {d.form.step} {step + 1} {d.form.of} {steps.length}
       </p>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="mt-6">
+      <form onSubmit={handleFormSubmit} className="mt-6">
         {step === 0 && (
           <div className="grid gap-4 sm:grid-cols-2">
             <Field label={d.form.fullName} required error={errors.fullName?.message}>
