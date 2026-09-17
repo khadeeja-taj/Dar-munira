@@ -3,61 +3,12 @@
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
-import { ArrowLeft, ArrowRight, Flower2 } from "lucide-react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import { useLang } from "@/lib/i18n/provider";
 import { SocialIcons } from "@/components/ui/Social";
 
-/** Gentle drifting white blossoms floating over the hero. */
-function Petals() {
-  // Generate on the client only, to avoid SSR/hydration mismatch from random.
-  const [petals, setPetals] = useState<
-    { left: number; size: number; delay: number; duration: number; drift: number }[]
-  >([]);
-
-  useEffect(() => {
-    const items = Array.from({ length: 14 }, () => ({
-      left: Math.random() * 100,
-      size: 12 + Math.random() * 18,
-      delay: Math.random() * 10,
-      duration: 9 + Math.random() * 9,
-      drift: (Math.random() - 0.5) * 120,
-    }));
-    setPetals(items);
-  }, []);
-
-  return (
-    <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden>
-      {petals.map((p, i) => (
-        <motion.span
-          key={i}
-          className="absolute -top-10 text-white/80"
-          style={{ left: `${p.left}%` }}
-          initial={{ y: -40, x: 0, rotate: 0, opacity: 0 }}
-          animate={{
-            y: ["-6%", "112%"],
-            x: [0, p.drift, 0],
-            rotate: [0, 180, 360],
-            opacity: [0, 0.9, 0.9, 0],
-          }}
-          transition={{
-            duration: p.duration,
-            delay: p.delay,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-        >
-          <Flower2
-            style={{ width: p.size, height: p.size }}
-            className="drop-shadow-[0_2px_6px_rgba(0,0,0,0.25)]"
-          />
-        </motion.span>
-      ))}
-    </div>
-  );
-}
-
 export function Hero() {
-  const { d, dir } = useLang();
+  const { d, dir, lang } = useLang();
   const [y, setY] = useState(0);
   const Arrow = dir === "rtl" ? ArrowLeft : ArrowRight;
 
@@ -69,7 +20,7 @@ export function Hero() {
 
   // Subtle text shadow so every word stays crisp over the photo.
   const shadow = useMemo(
-    () => ({ textShadow: "0 2px 14px rgba(0,0,0,0.55), 0 1px 3px rgba(0,0,0,0.5)" }),
+    () => ({ textShadow: "0 2px 14px rgba(0,0,0,0.5), 0 1px 3px rgba(0,0,0,0.45)" }),
     [],
   );
 
@@ -94,15 +45,12 @@ export function Hero() {
             aria-label="Dar Munira building"
           />
 
-          {/* Deeper diagonal scrim on the left for crisp, legible text… */}
-          <div className="absolute inset-0 -z-10 bg-[linear-gradient(115deg,rgba(6,45,29,.95)_0%,rgba(8,66,42,.78)_38%,rgba(11,93,59,.42)_62%,rgba(22,120,150,.12)_100%)]" />
-          {/* …plus a soft bottom vignette so lower text/buttons stay clear. */}
-          <div className="absolute inset-0 -z-10 bg-[linear-gradient(to_top,rgba(4,30,20,.7)_0%,rgba(4,30,20,0)_45%)]" />
+          {/* Light diagonal wash — keeps text readable while showing the photo. */}
+          <div className="absolute inset-0 -z-10 bg-[linear-gradient(115deg,rgba(6,45,29,.55)_0%,rgba(8,66,42,.34)_40%,rgba(11,93,59,.14)_70%,rgba(255,255,255,0)_100%)]" />
+          {/* Soft dark gradient only at the very bottom, for the tagline. */}
+          <div className="absolute inset-0 -z-10 bg-[linear-gradient(to_top,rgba(6,45,29,.62)_0%,rgba(6,45,29,0)_28%)]" />
 
-          {/* Floating white blossoms */}
-          <Petals />
-
-          <div className="flex min-h-[80vh] flex-col justify-center p-8 sm:p-12 lg:p-16">
+          <div className="flex min-h-[80vh] flex-col justify-center p-8 pb-24 sm:p-12 sm:pb-28 lg:p-16 lg:pb-28">
             <div className="max-w-2xl">
               <motion.div
                 initial={{ opacity: 0, y: -14, scale: 0.96 }}
@@ -137,57 +85,6 @@ export function Hero() {
                 {d.hero.title}
               </h1>
 
-              {/* Elegant Arabic tagline — "Here hearts blossom with the Qur'an",
-                  written in white with little flower accents. */}
-              <motion.div
-                dir="rtl"
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.5, duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-                className="mt-6"
-              >
-                <div className="flex items-center gap-3">
-                  <motion.span
-                    animate={{ rotate: [0, 14, -6, 0], scale: [1, 1.15, 1] }}
-                    transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-                  >
-                    <Flower2 className="h-6 w-6 text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.45)] sm:h-7 sm:w-7" />
-                  </motion.span>
-                  <span
-                    className="font-arabic text-3xl font-semibold leading-[1.5] text-white sm:text-4xl md:text-5xl"
-                    style={{
-                      textShadow:
-                        "0 2px 18px rgba(0,0,0,0.6), 0 0 26px rgba(255,255,255,0.28)",
-                    }}
-                  >
-                    هنا تُزهر القلوب بالقرآن
-                  </span>
-                  <motion.span
-                    animate={{ rotate: [0, -14, 6, 0], scale: [1, 1.15, 1] }}
-                    transition={{ duration: 5, delay: 0.6, repeat: Infinity, ease: "easeInOut" }}
-                  >
-                    <Flower2 className="h-6 w-6 text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.45)] sm:h-7 sm:w-7" />
-                  </motion.span>
-                </div>
-                {/* a little row of white blossoms under the phrase */}
-                <div className="mt-2 flex items-center gap-1.5 ps-9">
-                  {[0, 1, 2, 3, 4].map((i) => (
-                    <motion.span
-                      key={i}
-                      animate={{ y: [0, -3, 0], opacity: [0.6, 1, 0.6] }}
-                      transition={{
-                        duration: 2.6,
-                        delay: i * 0.25,
-                        repeat: Infinity,
-                        ease: "easeInOut",
-                      }}
-                    >
-                      <Flower2 className="h-3.5 w-3.5 text-white/85" />
-                    </motion.span>
-                  ))}
-                </div>
-              </motion.div>
-
               <p
                 className="mt-3 font-display text-xl text-white sm:text-2xl"
                 style={shadow}
@@ -213,6 +110,23 @@ export function Hero() {
               </div>
             </div>
           </div>
+
+          {/* Elegant tagline (bilingual) — pinned to the bottom of the image. */}
+          <motion.p
+            dir={dir}
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5, duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+            className={`absolute inset-x-0 bottom-0 px-6 pb-6 text-center text-3xl font-semibold leading-[1.6] text-white sm:pb-8 sm:text-4xl md:text-5xl ${
+              lang === "ar" ? "font-arabic" : "font-display"
+            }`}
+            style={{
+              textShadow:
+                "0 2px 18px rgba(0,0,0,0.6), 0 0 26px rgba(255,255,255,0.22)",
+            }}
+          >
+            {d.hero.tagline}
+          </motion.p>
         </motion.div>
       </div>
     </section>
