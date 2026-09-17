@@ -16,25 +16,40 @@ export async function GET(req: Request) {
   const reg = (searchParams.get("reg") || "").trim();
   if (reg.length < 2) return fail("Enter your registration number", 400);
 
-  const rows = await prisma.studentApplication.findMany({
-    where: { registrationNo: reg },
-    orderBy: { createdAt: "desc" },
-    select: {
-      fullName: true,
-      email: true,
-      phone: true,
-      nationality: true,
-      registrationNo: true,
-      universityId: true,
-      department: true,
-      specialization: true,
-      academicLevel: true,
-      course: true,
-      courseLevel: true,
-      status: true,
-      createdAt: true,
-    },
-  });
+  const select = {
+    fullName: true,
+    email: true,
+    phone: true,
+    nationality: true,
+    registrationNo: true,
+    universityId: true,
+    department: true,
+    specialization: true,
+    academicLevel: true,
+    course: true,
+    courseLevel: true,
+    status: true,
+    createdAt: true,
+  } as const;
+
+  // Match the registration number regardless of upper/lower case. On
+  // PostgreSQL (production) this uses case-insensitive matching; if that mode
+  // isn't supported (e.g. local SQLite) fall back to common case variants.
+  let rows;
+  try {
+    rows = await prisma.studentApplication.findMany({
+      where: { registrationNo: { equals: reg, mode: "insensitive" } },
+      orderBy: { createdAt: "desc" },
+      select,
+    });
+  } catch {
+    const variants = Array.from(new Set([reg, reg.toUpperCase(), reg.toLowerCase()]));
+    rows = await prisma.studentApplication.findMany({
+      where: { registrationNo: { in: variants } },
+      orderBy: { createdAt: "desc" },
+      select,
+    });
+  }
 
   if (rows.length === 0) return ok({ found: false });
 

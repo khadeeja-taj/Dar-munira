@@ -111,6 +111,12 @@ export function StudentForm() {
         setValue("academicLevel", p.academicLevel || "");
         setHistory(json.data.history || []);
         setLookupMsg(null);
+        // Details are filled in. If a course is already chosen (came from a
+        // course card), jump straight to the Review step so they just submit.
+        if (fromCard) {
+          setStep(steps.length - 1);
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }
       } else {
         setHistory(null);
         setLookupMsg(d.form.lookupNotFound);
