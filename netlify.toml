@@ -1,0 +1,29 @@
+# Netlify deploy config for Dar Al Munira (Next.js 14 + Prisma).
+#
+# The Next.js Runtime plugin below turns the App Router, API routes and
+# middleware into serverless/edge functions automatically — no extra setup.
+#
+# IMPORTANT: this app cannot use its dev SQLite database on Netlify (serverless
+# hosts have no persistent disk). You MUST provide a hosted PostgreSQL
+# DATABASE_URL in the Netlify UI (see NETLIFY.md). The build command below
+# switches Prisma to PostgreSQL, creates the tables, seeds the admin account,
+# and then builds the site.
+
+[build]
+  # Reuses the proven package.json "vercel-build" script:
+  #   node scripts/use-postgres.mjs  -> switch Prisma datasource to postgresql
+  #   prisma generate                -> generate the Prisma client
+  #   prisma db push --skip-generate -> create/update the tables
+  #   tsx prisma/seed.ts             -> create the admin account (+ samples)
+  #   next build                     -> build the Next.js app
+  command = "npm run vercel-build"
+  publish = ".next"
+
+[build.environment]
+  # Next.js 14 + Prisma need a modern Node. Matches package.json "engines".
+  NODE_VERSION = "20"
+
+# Official Netlify Next.js Runtime (v5). Netlify installs this managed plugin
+# automatically; declaring it here makes the setup explicit and reproducible.
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
