@@ -79,12 +79,6 @@ export function Footer() {
             </li>
             <li>{d.contact.addressValue}</li>
           </ul>
-          <Link
-            href="/admin/login"
-            className="mt-5 inline-block text-xs text-white/40 transition hover:text-white/70"
-          >
-            {t("nav.admin")} →
-          </Link>
         </div>
       </div>
 

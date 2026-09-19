@@ -64,12 +64,6 @@ export function Navbar() {
           </div>
           <LanguageSwitch />
           <Link
-            href="/admin/login"
-            className="hidden whitespace-nowrap rounded-full border border-emerald/20 bg-white/70 px-4 py-2 text-sm font-semibold text-emerald-deep transition hover:bg-white lg:inline-flex"
-          >
-            {t("nav.admin")}
-          </Link>
-          <Link
             href="/register"
             className="hidden whitespace-nowrap rounded-full bg-emerald px-4 py-2 text-sm font-semibold text-white shadow-glass transition hover:bg-emerald-soft sm:inline-flex"
           >
@@ -107,13 +101,6 @@ export function Navbar() {
                 className="btn-primary flex-1"
               >
                 {t("hero.getStarted")}
-              </Link>
-              <Link
-                href="/admin/login"
-                onClick={() => setOpen(false)}
-                className="btn-ghost flex-1"
-              >
-                {t("nav.admin")}
               </Link>
             </li>
             <li className="mt-3">
