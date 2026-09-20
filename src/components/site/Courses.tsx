@@ -29,36 +29,36 @@ const CATEGORIES: {
 // The four Programs always show (even before an admin adds anything).
 const DEFAULT_PROGRAMS: CourseItem[] = [
   {
-    id: "prog-hifz-quran",
-    category: "program",
-    titleEn: "Hifz ul Qur'an",
-    titleAr: "حفظ القرآن",
-    descEn: "Structured memorization of the Holy Qur'an with revision and tarbiyah.",
-    descAr: "حفظٌ منظّم للقرآن الكريم مع المراجعة والتربية.",
-  },
-  {
-    id: "prog-tilawah",
-    category: "program",
-    titleEn: "Tilawah (Recitation)",
-    titleAr: "تلاوة القرآن",
-    descEn: "Beautiful, correct recitation of the Holy Qur'an.",
-    descAr: "تلاوة القرآن الكريم تلاوةً صحيحةً مُجوَّدة.",
-  },
-  {
-    id: "prog-tadabbur",
-    category: "program",
-    titleEn: "Tadabbur (Reflection)",
-    titleAr: "تدبر القرآن",
-    descEn: "Reflect on the meanings and guidance of the Qur'an.",
-    descAr: "التدبّر في معاني القرآن الكريم وهداياته.",
-  },
-  {
     id: "prog-tajweed",
     category: "program",
     titleEn: "Tajweed",
     titleAr: "التجويد",
     descEn: "Master correct Qur'anic recitation across progressive levels.",
     descAr: "إتقان التلاوة الصحيحة عبر مستويات متدرّجة.",
+  },
+  {
+    id: "prog-hifz-quran",
+    category: "program",
+    titleEn: "Quran Memorization",
+    titleAr: "حفظ القرآن",
+    descEn: "Structured memorization of the Holy Qur'an with revision and tarbiyah.",
+    descAr: "حفظٌ منظّم للقرآن الكريم مع المراجعة والتربية.",
+  },
+  {
+    id: "prog-tadabbur",
+    category: "program",
+    titleEn: "Quran Reflection",
+    titleAr: "تدبر القرآن",
+    descEn: "Reflect on the meanings and guidance of the Qur'an.",
+    descAr: "التدبّر في معاني القرآن الكريم وهداياته.",
+  },
+  {
+    id: "prog-tilawah",
+    category: "program",
+    titleEn: "Quran Recitation",
+    titleAr: "التلاوة",
+    descEn: "Beautiful, correct recitation of the Holy Qur'an.",
+    descAr: "تلاوة القرآن الكريم تلاوةً صحيحةً مُجوَّدة.",
   },
 ];
 

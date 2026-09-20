@@ -19,28 +19,30 @@ async function main() {
   // Seed the four default Programs (idempotent). Admins can edit/delete these
   // and add Courses / Competitions from the admin panel.
   const programs = [
-    { id: "prog-hifz-quran", titleEn: "Hifz ul Qur'an", titleAr: "حفظ القرآن", descEn: "Structured memorization of the Holy Qur'an with revision and tarbiyah.", descAr: "حفظٌ منظّم للقرآن الكريم مع المراجعة والتربية." },
-    { id: "prog-tilawah", titleEn: "Tilawah (Recitation)", titleAr: "تلاوة القرآن", descEn: "Beautiful, correct recitation of the Holy Qur'an.", descAr: "تلاوة القرآن الكريم تلاوةً صحيحةً مُجوَّدة." },
-    { id: "prog-tadabbur", titleEn: "Tadabbur (Reflection)", titleAr: "تدبر القرآن", descEn: "Reflect on the meanings and guidance of the Qur'an.", descAr: "التدبّر في معاني القرآن الكريم وهداياته." },
     { id: "prog-tajweed", titleEn: "Tajweed", titleAr: "التجويد", descEn: "Master correct Qur'anic recitation across progressive levels.", descAr: "إتقان التلاوة الصحيحة عبر مستويات متدرّجة." },
+    { id: "prog-hifz-quran", titleEn: "Quran Memorization", titleAr: "حفظ القرآن", descEn: "Structured memorization of the Holy Qur'an with revision and tarbiyah.", descAr: "حفظٌ منظّم للقرآن الكريم مع المراجعة والتربية." },
+    { id: "prog-tadabbur", titleEn: "Quran Reflection", titleAr: "تدبر القرآن", descEn: "Reflect on the meanings and guidance of the Qur'an.", descAr: "التدبّر في معاني القرآن الكريم وهداياته." },
+    { id: "prog-tilawah", titleEn: "Quran Recitation", titleAr: "التلاوة", descEn: "Beautiful, correct recitation of the Holy Qur'an.", descAr: "تلاوة القرآن الكريم تلاوةً صحيحةً مُجوَّدة." },
   ];
   for (let i = 0; i < programs.length; i++) {
     const p = programs[i];
+    const fields = {
+      category: "program",
+      titleEn: p.titleEn,
+      titleAr: p.titleAr,
+      descEn: p.descEn,
+      descAr: p.descAr,
+      sortOrder: i,
+    };
     await prisma.courseItem.upsert({
       where: { id: p.id },
-      update: {},
-      create: {
-        id: p.id,
-        category: "program",
-        titleEn: p.titleEn,
-        titleAr: p.titleAr,
-        descEn: p.descEn,
-        descAr: p.descAr,
-        sortOrder: i,
-      },
+      // Keep the four default Programs in sync with the intended labels/order
+      // on every seed (also corrects rows seeded with earlier titles).
+      update: fields,
+      create: { id: p.id, ...fields },
     });
   }
-  console.log("✔ Programs ready (Hifz, Tilawah, Tadabbur, Tajweed)");
+  console.log("✔ Programs ready (Tajweed, Memorization, Reflection, Recitation)");
 
   // Demo/sample data is only seeded when explicitly requested (e.g. local dev).
   // In production leave the site empty. Set SEED_SAMPLES=true to include samples.

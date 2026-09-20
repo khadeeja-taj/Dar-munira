@@ -47,6 +47,15 @@ export const WHATSAPP_GROUP_URL =
 
 export const COURSE_KEYS = COURSES.map((c) => c.key);
 
+// The Programs list shown in the footer/menu — kept to these four only.
+// Bilingual: English labels in EN mode, Arabic labels in AR mode.
+export const PROGRAMS = [
+  { key: "tajweed", en: "Tajweed", ar: "التجويد" },
+  { key: "hifz-quran", en: "Quran Memorization", ar: "حفظ القرآن" },
+  { key: "tadabbur", en: "Quran Reflection", ar: "تدبر القرآن" },
+  { key: "tilawah", en: "Quran Recitation", ar: "التلاوة" },
+] as const;
+
 export const TAJWEED_LEVELS = [
   { key: "basic", en: "Basic", ar: "المبتدئ" },
   { key: "intermediate", en: "Intermediate", ar: "المتوسط" },
@@ -85,8 +94,10 @@ export const TAUGHT_LEVELS = [
 // Instructors teach a narrower course set per the blueprint.
 export const INSTRUCTOR_COURSES = [
   { key: "tajweed", en: "Tajweed", ar: "التجويد", leveled: true },
-  { key: "hifz-quran", en: "Hifz ul Qur'an", ar: "حفظ القرآن", leveled: false },
-  { key: "hifz-hadith", en: "Hifz ul Hadith", ar: "حفظ الحديث", leveled: false },
+  { key: "tilawah", en: "Quran Recitation", ar: "تلاوة القرآن", leveled: false },
+  { key: "tadabbur", en: "Quran Reflection", ar: "تدبر القرآن", leveled: false },
+  { key: "hifz-quran", en: "Quran Memorization", ar: "حفظ القرآن", leveled: false },
+  { key: "arabic", en: "Arabic Language", ar: "اللغة العربية", leveled: false },
 ] as const;
 
 export const EXPERIENCE_YEARS = [

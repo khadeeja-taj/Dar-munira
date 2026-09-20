@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useLang } from "@/lib/i18n/provider";
 import { DarLogo, IIUILogo } from "@/components/ui/Logo";
 import { SocialIcons } from "@/components/ui/Social";
-import { COURSES } from "@/lib/constants";
+import { PROGRAMS } from "@/lib/constants";
 
 export function Footer() {
   const { t, lang, d } = useLang();
@@ -55,7 +55,7 @@ export function Footer() {
             {d.footer.programs}
           </h4>
           <ul className="space-y-2 text-sm">
-            {COURSES.map((c) => (
+            {PROGRAMS.map((c) => (
               <li key={c.key}>
                 <Link
                   href="/#courses"
