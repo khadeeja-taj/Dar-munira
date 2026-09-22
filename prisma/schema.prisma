@@ -92,6 +92,10 @@ model InstructorApplication {
   // Meta
   status            String            @default("PENDING")
   notes             String?
+  // Admin-controlled display order for the public Teachers section. Lower comes
+  // first; ties fall back to createdAt. New records get a value past the current
+  // maximum so adding a teacher never reshuffles the existing order.
+  sortOrder         Int               @default(0)
   createdAt         DateTime          @default(now())
   updatedAt         DateTime          @updatedAt
 
@@ -101,6 +105,7 @@ model InstructorApplication {
   @@index([course])
   @@index([nationality])
   @@index([createdAt])
+  @@index([sortOrder])
 }
 
 model VisitingTeacherApplication {

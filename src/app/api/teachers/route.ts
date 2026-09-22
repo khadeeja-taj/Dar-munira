@@ -13,7 +13,9 @@ export async function GET() {
     const teachers = await prisma.instructorApplication.findMany({
       where: { status: "APPROVED" },
       select: { id: true, fullName: true },
-      orderBy: { createdAt: "asc" },
+      // Admin-chosen order first; createdAt breaks ties (and preserves the
+      // original order for records that were never manually reordered).
+      orderBy: [{ sortOrder: "asc" }, { createdAt: "asc" }],
     });
     return ok(teachers);
   } catch {

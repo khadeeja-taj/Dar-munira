@@ -50,6 +50,13 @@ export async function POST(req: Request) {
   }
 
   try {
+    // Append new teachers after existing ones so the admin-chosen order is
+    // never reshuffled when an application comes in.
+    const last = await prisma.instructorApplication.aggregate({
+      _max: { sortOrder: true },
+    });
+    const nextOrder = (last._max.sortOrder ?? -1) + 1;
+
     const created = await prisma.instructorApplication.create({
       data: {
         fullName: sanitizeText(v.fullName),
@@ -68,6 +75,7 @@ export async function POST(req: Request) {
         instituteName: v.instituteName ? sanitizeText(v.instituteName) : null,
         experienceYears: v.experienceYears,
         teachingMode: v.teachingMode,
+        sortOrder: nextOrder,
         files: { create: files },
       },
       select: { id: true },
