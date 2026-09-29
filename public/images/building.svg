@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 820" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Dar Munira building">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#8ec9e6"/>
+      <stop offset="1" stop-color="#cfe8f2"/>
+    </linearGradient>
+    <linearGradient id="brick" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#d98d72"/>
+      <stop offset="1" stop-color="#c06f54"/>
+    </linearGradient>
+    <linearGradient id="tree" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#5aa64a"/>
+      <stop offset="1" stop-color="#2f6b34"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1280" height="820" fill="url(#sky)"/>
+
+  <!-- ground -->
+  <rect y="650" width="1280" height="170" fill="#c9b291"/>
+  <rect y="712" width="1280" height="108" fill="#b07f5f" opacity="0.5"/>
+
+  <!-- building facade -->
+  <rect x="290" y="230" width="700" height="440" fill="url(#brick)" stroke="#9c5b44" stroke-width="4"/>
+
+  <!-- brick courses -->
+  <g stroke="#b06f55" stroke-width="2" opacity="0.55">
+    <line x1="290" y1="286" x2="990" y2="286"/><line x1="290" y1="342" x2="990" y2="342"/>
+    <line x1="290" y1="398" x2="990" y2="398"/><line x1="290" y1="454" x2="990" y2="454"/>
+    <line x1="290" y1="510" x2="990" y2="510"/><line x1="290" y1="566" x2="990" y2="566"/>
+    <line x1="290" y1="622" x2="990" y2="622"/>
+  </g>
+
+  <!-- decorative blue tile band -->
+  <rect x="290" y="236" width="700" height="22" fill="#2f8fa6"/>
+  <g fill="#eaf6f0" opacity="0.85">
+    <circle cx="320" cy="247" r="3.5"/><circle cx="360" cy="247" r="3.5"/><circle cx="400" cy="247" r="3.5"/>
+    <circle cx="440" cy="247" r="3.5"/><circle cx="480" cy="247" r="3.5"/><circle cx="520" cy="247" r="3.5"/>
+    <circle cx="560" cy="247" r="3.5"/><circle cx="600" cy="247" r="3.5"/><circle cx="640" cy="247" r="3.5"/>
+    <circle cx="680" cy="247" r="3.5"/><circle cx="720" cy="247" r="3.5"/><circle cx="760" cy="247" r="3.5"/>
+    <circle cx="800" cy="247" r="3.5"/><circle cx="840" cy="247" r="3.5"/><circle cx="880" cy="247" r="3.5"/>
+    <circle cx="920" cy="247" r="3.5"/><circle cx="960" cy="247" r="3.5"/>
+  </g>
+
+  <!-- windows -->
+  <g>
+    <rect x="360" y="430" width="150" height="130" fill="#2b3236" stroke="#9c5b44" stroke-width="8"/>
+    <rect x="770" y="430" width="150" height="130" fill="#2b3236" stroke="#9c5b44" stroke-width="8"/>
+    <g stroke="#6b757a" stroke-width="3">
+      <line x1="435" y1="430" x2="435" y2="560"/><line x1="360" y1="495" x2="510" y2="495"/>
+      <line x1="845" y1="430" x2="845" y2="560"/><line x1="770" y1="495" x2="920" y2="495"/>
+    </g>
+  </g>
+
+  <!-- entrance canopy + wooden door -->
+  <rect x="558" y="452" width="164" height="26" rx="4" fill="#e7dcc4"/>
+  <rect x="580" y="478" width="120" height="192" fill="#8a5a38"/>
+  <rect x="592" y="490" width="96" height="180" fill="#a06a42"/>
+  <line x1="640" y1="490" x2="640" y2="670" stroke="#5f3c26" stroke-width="4"/>
+  <!-- steps -->
+  <rect x="536" y="636" width="208" height="14" fill="#efe9dd"/>
+  <rect x="514" y="650" width="252" height="14" fill="#e2d9c8"/>
+  <rect x="492" y="664" width="296" height="16" fill="#d4cab6"/>
+
+  <!-- trees -->
+  <ellipse cx="150" cy="430" rx="185" ry="215" fill="url(#tree)"/>
+  <ellipse cx="1130" cy="410" rx="195" ry="235" fill="url(#tree)"/>
+  <ellipse cx="120" cy="300" rx="120" ry="140" fill="#69b04f" opacity="0.9"/>
+  <ellipse cx="1160" cy="270" rx="130" ry="150" fill="#69b04f" opacity="0.9"/>
+</svg>
