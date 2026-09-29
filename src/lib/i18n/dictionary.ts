@@ -73,6 +73,8 @@ export const dictionary = {
       levels: "Levels",
       programsLabel: "Programs",
       coursesLabel: "Courses",
+      statusOpen: "Registration Open",
+      statusClosed: "Registration Closed",
     },
     teachers: {
       kicker: "Our Instructors",
@@ -307,6 +309,8 @@ export const dictionary = {
       levels: "المستويات",
       programsLabel: "البرامج",
       coursesLabel: "الدورات",
+      statusOpen: "التسجيل مفتوح",
+      statusClosed: "التسجيل مغلق",
     },
     teachers: {
       kicker: "معلماتنا",

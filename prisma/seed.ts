@@ -44,6 +44,17 @@ async function main() {
   }
   console.log("✔ Programs ready (Tajweed, Memorization, Reflection, Recitation)");
 
+  // Registration status rows (one per category). Created only if missing so
+  // admin edits are never overwritten on re-seed.
+  for (const id of ["program", "course", "competition"]) {
+    await prisma.registrationStatus.upsert({
+      where: { id },
+      update: {},
+      create: { id, isOpen: false, messageEn: "", messageAr: "", url: "" },
+    });
+  }
+  console.log("✔ Registration status rows ready");
+
   // Demo/sample data is only seeded when explicitly requested (e.g. local dev).
   // In production leave the site empty. Set SEED_SAMPLES=true to include samples.
   if (process.env.SEED_SAMPLES !== "true") {

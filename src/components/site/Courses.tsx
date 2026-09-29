@@ -62,15 +62,35 @@ const DEFAULT_PROGRAMS: CourseItem[] = [
   },
 ];
 
+type RegStatus = {
+  id: string;
+  isOpen: boolean;
+  messageEn: string | null;
+  messageAr: string | null;
+  url: string | null;
+};
+
 export function Courses() {
   const { d, lang } = useLang();
   const [items, setItems] = useState<CourseItem[] | null>(null);
+  const [status, setStatus] = useState<Record<string, RegStatus>>({});
 
   useEffect(() => {
     fetch("/api/courses")
       .then((r) => (r.ok ? r.json() : { data: [] }))
       .then((res) => setItems(res.data || []))
       .catch(() => setItems([]));
+  }, []);
+
+  useEffect(() => {
+    fetch("/api/registration-status")
+      .then((r) => (r.ok ? r.json() : { data: [] }))
+      .then((res) => {
+        const map: Record<string, RegStatus> = {};
+        (res.data || []).forEach((s: RegStatus) => (map[s.id] = s));
+        setStatus(map);
+      })
+      .catch(() => {});
   }, []);
 
   return (
@@ -82,6 +102,14 @@ export function Courses() {
           if (key === "program" && items && group.length === 0) {
             group = DEFAULT_PROGRAMS;
           }
+          const reg = status[key];
+          const regMsg = reg
+            ? lang === "ar"
+              ? reg.messageAr || reg.messageEn || ""
+              : reg.messageEn || reg.messageAr || ""
+            : "";
+          const regUrl =
+            reg?.url && /^https?:\/\//i.test(reg.url) ? reg.url : "";
           return (
             <div key={key} className="mt-14">
               <Reveal>
@@ -90,6 +118,43 @@ export function Courses() {
                   {lang === "ar" ? ar : en}
                 </h3>
               </Reveal>
+
+              {reg && (
+                <Reveal>
+                  <div className="mb-6 flex flex-wrap items-center gap-x-4 gap-y-2">
+                    <span
+                      className={
+                        "inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold " +
+                        (reg.isOpen
+                          ? "bg-leaf/15 text-emerald-deep"
+                          : "bg-rose-50 text-rose-600")
+                      }
+                    >
+                      <span
+                        className={
+                          "h-2 w-2 rounded-full " +
+                          (reg.isOpen ? "bg-leaf" : "bg-rose-400")
+                        }
+                      />
+                      {reg.isOpen ? d.courses.statusOpen : d.courses.statusClosed}
+                    </span>
+                    {regMsg && (
+                      <span className="text-sm text-brand-muted">{regMsg}</span>
+                    )}
+                    {reg.isOpen && regUrl && (
+                      <a
+                        href={regUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1 text-sm font-semibold text-emerald transition hover:gap-2"
+                      >
+                        {d.courses.register}
+                        <ArrowUpRight className="h-4 w-4" />
+                      </a>
+                    )}
+                  </div>
+                </Reveal>
+              )}
 
               {items && group.length === 0 ? (
                 <p className="text-sm text-brand-muted">

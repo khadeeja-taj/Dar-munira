@@ -218,3 +218,14 @@ model ContactMessage {
 
   @@index([handled])
 }
+
+// Admin-controlled registration status per category shown on the Courses page.
+// One row per category — id is "program" | "course" | "competition".
+model RegistrationStatus {
+  id        String   @id // program | course | competition
+  isOpen    Boolean  @default(false)
+  messageEn String?
+  messageAr String?
+  url       String?
+  updatedAt DateTime @updatedAt @default(now())
+}

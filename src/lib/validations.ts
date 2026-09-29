@@ -155,3 +155,31 @@ export const courseItemSchema = z.object({
   sortOrder: z.coerce.number().int().min(0).max(9999).optional(),
 });
 export type CourseItemInput = z.infer<typeof courseItemSchema>;
+
+// Admin-controlled registration status per category. A URL, when present, must
+// be an http(s) link (blocks javascript: and other unsafe schemes).
+const registrationUrl = z
+  .union([
+    z.literal(""),
+    z
+      .string()
+      .trim()
+      .max(500)
+      .regex(/^https?:\/\//i, "Link must start with http:// or https://"),
+  ])
+  .optional();
+
+export const registrationStatusSchema = z.object({
+  items: z
+    .array(
+      z.object({
+        id: z.enum(["program", "course", "competition"]),
+        isOpen: z.boolean(),
+        messageEn: z.string().max(300).optional().or(z.literal("")),
+        messageAr: z.string().max(300).optional().or(z.literal("")),
+        url: registrationUrl,
+      }),
+    )
+    .max(3),
+});
+export type RegistrationStatusInput = z.infer<typeof registrationStatusSchema>;
